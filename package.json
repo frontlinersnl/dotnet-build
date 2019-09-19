@@ -1,0 +1,21 @@
+{
+    "name": "dotnet-build",
+    "version": "1.0.0",
+    "description": "[![logo](./logo.jpg)](https://inforit.nl)",
+    "main": "index.js",
+    "scripts": {
+        "build": "docker build -t inforitnl/dotnet-build .",
+        "tag": "docker tag inforitnl/dotnet-build",
+        "push": "docker push inforitnl/dotnet-build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Inforitnl/dotnet-build.git"
+    },
+    "author": "Rick van Lieshout <info@rickvanlieshout.com> (http://rickvanlieshout.com)",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Inforitnl/dotnet-build/issues"
+    },
+    "homepage": "https://github.com/Inforitnl/dotnet-build#readme"
+}
