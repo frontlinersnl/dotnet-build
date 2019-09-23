@@ -2,6 +2,9 @@
 # return failing exit code if any command fails
 set -e
 
+# enable nullglob - allows filename patterns which match no files to expand to a null string, rather than themselves
+shopt -s nullglob
+
 # go to the workdir
 if [ -n "$BITBUCKET_CLONE_DIR" ]
 then

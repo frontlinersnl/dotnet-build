@@ -35,7 +35,7 @@ pipelines:
   default:
     - step:
         script:
-          - whatever
+          - /dotnet-build.sh
 ```
 
 ## scripts
