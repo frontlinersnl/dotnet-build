@@ -35,7 +35,7 @@ pipelines:
   default:
     - step:
         script:
-          - dotnet cake
+          - whatever
 ```
 
 ## scripts
