@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core-nightly/sdk:3.0-disco
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0
 # FROM ubuntu:19.04
 
 ENV MONO_VERSION 5.4.1.6
@@ -7,8 +7,8 @@ ENV MONO_VERSION 5.4.1.6
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
     curl \
-    apt-transport-https=1.8.3 \
-    gnupg=2.2.12-1ubuntu3 \
+    apt-transport-https \
+    gnupg \
     wget \
     dpkg \ 
     zip \
