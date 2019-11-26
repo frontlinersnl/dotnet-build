@@ -79,4 +79,5 @@ cp -r deployment/ $PROJECT_DIST
 
 # generate artifacts dir
 echo "generating artifacts"
-zip -r "$ARTIFACTS_DIST/$CS_PROJECT_NAME.zip" "$PROJECT_DIST"
+cd "$PROJECT_DIST"
+zip -r "/api/$ARTIFACTS_DIST/$CS_PROJECT_NAME.zip" "."
