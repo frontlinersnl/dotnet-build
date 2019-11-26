@@ -5,10 +5,13 @@ set -e
 # enable nullglob - allows filename patterns which match no files to expand to a null string, rather than themselves
 shopt -s nullglob
 
+ROOTDIRECTORY="/api"
+
 # go to the workdir
 if [ -n "$BITBUCKET_CLONE_DIR" ]
 then
     cd "$BITBUCKET_CLONE_DIR" || return
+    ROOTDIRECTORY="$BITBUCKET_CLONE_DIR"
 else
     cd /api || return
 fi
@@ -80,4 +83,5 @@ cp -r deployment/ $PROJECT_DIST
 # generate artifacts dir
 echo "generating artifacts"
 cd "$PROJECT_DIST"
-zip -r "/api/$ARTIFACTS_DIST/$CS_PROJECT_NAME.zip" "."
+
+zip -r "$ROOTDIRECTORY/$ARTIFACTS_DIST/$CS_PROJECT_NAME.zip" "."
