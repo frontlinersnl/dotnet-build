@@ -25,7 +25,7 @@ then
     echo "$VAR" > ~/.nuget/NuGet/NuGet.Config
 fi
 
-CS_PROJECT_FILE=""
+CS_PROJECT_FILE="Api/Api.csproj"
 CS_PROJECT_NAME="Api"
 DIST="./dist"
 RELEASE="Release"
@@ -36,7 +36,7 @@ then
   CS_PROJECT_NAME="$PROJECT_NAME"
 fi
 
-# change project file location from default "*.sln" if specified
+# change project file location from default "Api.csproj" if specified
 if [ -n "$PROJECT_FILE" ]
 then
   CS_PROJECT_FILE="$PROJECT_FILE"
