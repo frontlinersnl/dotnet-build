@@ -1,7 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0
-# FROM ubuntu:19.04
-
-ENV MONO_VERSION 5.4.1.6
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
 
 # install base software
 RUN apt-get update \
