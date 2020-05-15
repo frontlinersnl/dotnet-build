@@ -9,6 +9,7 @@ RUN apt-get update \
     wget \
     dpkg \ 
     zip \
+    default-jre \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set workdir alias
