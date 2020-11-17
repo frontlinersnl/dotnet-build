@@ -1,7 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0
 
 # install base software
-RUN apt-get update \
+RUN mkdir -p /usr/share/man/man1 
+    && mkdir -p /usr/share/man/man7
+    && apt-get update \
     && apt-get install --no-install-recommends -y \
     curl \
     apt-transport-https \
