@@ -1,16 +1,42 @@
 #!/bin/bash
+
 # return failing exit code if any command fails
 set -e
 
 # enable nullglob - allows filename patterns which match no files to expand to a null string, rather than themselves
 shopt -s nullglob
 
+# parse flags
+while getopts ":vt" opt; do
+  case $opt in
+    v) VERBOSE=true;;
+    t) WITH_TESTING=true;;
+  esac
+done
+
+# show input environment args
+if [ $VERBOSE ]
+then
+    echo "env: BITBUCKET_CLONE_DIR=$BITBUCKET_CLONE_DIR"
+    echo "env: MYGET_ACCESS_TOKEN=$MYGET_ACCESS_TOKEN" | sed -e 's/=.\+/=******/g'
+    echo "env: PROJECT_NAME=$PROJECT_NAME"
+    echo "env: PROJECT_FILE=$PROJECT_FILE"
+    echo "env: WITH_TESTING=$WITH_TESTING"
+    echo ""
+fi
+
 ROOTDIRECTORY="/api"
 
 # go to the workdir
 if [ -n "$BITBUCKET_CLONE_DIR" ]
 then
-    cd "$BITBUCKET_CLONE_DIR" || return
+    # support for relative path
+    case $BITBUCKET_CLONE_DIR in
+      /*) BITBUCKET_CLONE_DIR=$BITBUCKET_CLONE_DIR;;
+      *) BITBUCKET_CLONE_DIR=$PWD/$BITBUCKET_CLONE_DIR;;
+    esac
+
+    cd "$BITBUCKET_CLONE_DIR" || return    
     ROOTDIRECTORY="$BITBUCKET_CLONE_DIR"
 else
     cd /api || return
@@ -65,12 +91,19 @@ echo "building $CS_PROJECT_FILE"
 dotnet build -c $RELEASE --no-restore $CS_PROJECT_FILE
 
 # run tests
-echo "running tests"
-for f in *.Test/*.csproj
-do
-  echo "Processing $f file..."
-  dotnet test "$f" --no-restore -c $RELEASE -r "$DIST/test-results"  
-done
+if [ $WITH_TESTING ]
+then
+  echo "running tests"
+  for f in *.Test/*.csproj
+  do
+    echo "Processing $f file..."
+    dotnet test "$f" -c $RELEASE -r "$DIST/test-results" --filter "TestCategory!=[Integration]" /p:CollectCoverage=true /p:CoverletOutputFormat="opencover" /p:CoverletOutput="$DIST/test-coverlet"
+  done
+fi
+
+# generate coverage report
+dotnet tool install dotnet-reportgenerator-globaltool --tool-path "$DIST/tools"
+$DIST/tools/reportgenerator -reports:"**/*.opencover*.xml" -targetdir:dist/coverage -reporttypes:"Cobertura;HTMLInline;HTMLChart;SonarQube"
 
 # publish
 echo "publishing $CS_PROJECT_FILE"
@@ -78,10 +111,12 @@ dotnet publish -c $RELEASE -o "$PROJECT_DIST" $CS_PROJECT_FILE
 
 # copy deployment files over
 echo "copying deployment files $CS_PROJECT_FILE"
+cp ./bitbucket-build.sh $DIST
 cp -r deployment/ $PROJECT_DIST
 
 # generate artifacts dir
 echo "generating artifacts"
+rm -r $DIST/tools
 cd "$PROJECT_DIST"
 
 zip -r "$ROOTDIRECTORY/$ARTIFACTS_DIST/$CS_PROJECT_NAME.zip" "."
