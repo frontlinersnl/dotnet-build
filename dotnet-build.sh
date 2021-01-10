@@ -99,11 +99,11 @@ then
     echo "Processing $f file..."
     dotnet test "$f" -c $RELEASE -r "$DIST/test-results" --filter "TestCategory!=[Integration]" /p:CollectCoverage=true /p:CoverletOutputFormat="opencover" /p:CoverletOutput="$DIST/test-coverlet"
   done
+    
+  # generate coverage report
+  dotnet tool install dotnet-reportgenerator-globaltool --tool-path "$DIST/tools"
+  $DIST/tools/reportgenerator -reports:"**/*.opencover*.xml" -targetdir:dist/coverage -reporttypes:"Cobertura;HTMLInline;HTMLChart;SonarQube"
 fi
-
-# generate coverage report
-dotnet tool install dotnet-reportgenerator-globaltool --tool-path "$DIST/tools"
-$DIST/tools/reportgenerator -reports:"**/*.opencover*.xml" -targetdir:dist/coverage -reporttypes:"Cobertura;HTMLInline;HTMLChart;SonarQube"
 
 # publish
 echo "publishing $CS_PROJECT_FILE"
@@ -111,7 +111,6 @@ dotnet publish -c $RELEASE -o "$PROJECT_DIST" $CS_PROJECT_FILE
 
 # copy deployment files over
 echo "copying deployment files $CS_PROJECT_FILE"
-cp ./bitbucket-build.sh $DIST
 cp -r deployment/ $PROJECT_DIST
 
 # generate artifacts dir
