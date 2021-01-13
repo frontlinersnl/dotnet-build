@@ -22,6 +22,9 @@ RUN mkdir -p ~/scripts
 COPY scripts /scripts
 RUN echo "source /scripts/dotnetcore.sh" >> ~/.bashrc
 
+# install reportgenerator for code coverage
+RUN dotnet tool install -g dotnet-reportgenerator-globaltool
+
 # add entrypoint and run
 COPY dotnet-build.sh /dotnet-build.sh
 COPY entrypoint.sh /entrypoint.sh
