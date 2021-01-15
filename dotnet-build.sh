@@ -69,8 +69,11 @@ echo "running tests"
 for f in *.Test/*.csproj
 do
   echo "Processing $f file..."
-  dotnet test "$f" --no-restore -c $RELEASE -r "$DIST/test-results"  
+  dotnet test "$f" -c $RELEASE -r "$DIST/test-results" /p:CollectCoverage=true /p:CoverletOutputFormat="opencover" /p:CoverletOutput="$DIST/test-coverlet" 
 done
+
+# collect codecoverage files and generate report for sonarcloud (warning is for backwards compatability)
+reportgenerator -reports:"**/*.opencover*.xml" -targetdir:"$DIST/coverage" -reporttypes:"Cobertura;HTMLInline;HTMLChart;SonarQube" || echo -e "\033[33mWARNING: codecoverage not succesfull\033[0m"
 
 # publish
 echo "publishing $CS_PROJECT_FILE"
