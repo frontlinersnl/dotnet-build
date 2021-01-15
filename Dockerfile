@@ -24,6 +24,7 @@ RUN echo "source /scripts/dotnetcore.sh" >> ~/.bashrc
 
 # install reportgenerator for code coverage
 RUN dotnet tool install -g dotnet-reportgenerator-globaltool
+RUN dotnet tool install -g dotnet-sonarscanner
 
 # add entrypoint and run
 COPY dotnet-build.sh /dotnet-build.sh
