@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.102-1-buster-slim-amd64
+FROM mcr.microsoft.com/dotnet/sdk:5.0.202-buster-slim-amd64
 
 # install base software
 RUN mkdir -p /usr/share/man/man1 \
