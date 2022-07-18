@@ -12,6 +12,8 @@ RUN mkdir -p /usr/share/man/man1 \
     dpkg \ 
     zip \
     default-jre \
+    && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install --no-install-recommends -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set workdir alias
