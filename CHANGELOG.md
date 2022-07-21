@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Escaped simple params
 - Updated editorconfig to 2 spaces per tab
 - made deployment folder optional
+- added JUnit logging to test projects
 
 ## [6.0.4]
 

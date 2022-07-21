@@ -68,7 +68,8 @@ shopt -s nocaseglob # disable casing
 echo "running tests"
 for f in *.test/*.csproj; do
   echo "Processing $f file..."
-  dotnet test "$f" -c $RELEASE -r "$DIST/test-results" /p:CollectCoverage=true /p:CoverletOutputFormat="opencover" /p:CoverletOutput="$DIST/test-coverlet"
+  dotnet add "$f" package JUnitTestLogger
+  dotnet test "$f" --logger "junit" -c $RELEASE -r "$DIST/test-results" /p:CollectCoverage=true /p:CoverletOutputFormat="opencover" /p:CoverletOutput="$DIST/test-coverlet"
 done
 shopt -u nocaseglob # enable casing
 
