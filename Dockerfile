@@ -11,7 +11,9 @@ RUN mkdir -p /usr/share/man/man1 \
   wget \
   dpkg \ 
   zip \
+  ca-certificates \
   default-jre \
+  docker-compose \
   && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
   && apt-get install --no-install-recommends -y nodejs \
   && apt-get install -y --no-install-recommends libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb procps\
