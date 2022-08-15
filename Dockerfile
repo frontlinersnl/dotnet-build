@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0.302-bullseye-slim-amd64
+FROM mcr.microsoft.com/dotnet/sdk:6.0.400-bullseye-slim-amd64
 
 # install base software
 RUN mkdir -p /usr/share/man/man1 \
