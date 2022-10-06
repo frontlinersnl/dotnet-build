@@ -1,6 +1,6 @@
 {
   "name": "dotnet-build",
-  "version": "7.0.2",
+  "version": "7.0.3",
   "description": "[![logo](./logo.jpg)](https://inforit.nl)",
   "main": "index.js",
   "scripts": {
