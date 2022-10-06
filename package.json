@@ -6,7 +6,8 @@
   "scripts": {
     "build": "docker build -t inforitnl/dotnet-build .",
     "tag": "docker tag inforitnl/dotnet-build",
-    "push": "docker push inforitnl/dotnet-build"
+    "push": "docker push inforitnl/dotnet-build",
+    "publish": "DOCKER_PROD_TAG=$(cat package.json | grep version | head -1  | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && docker build -t inforitnl/dotnet-build . && docker tag inforitnl/dotnet-build inforitnl/dotnet-build:latest && docker tag inforitnl/dotnet-build inforitnl/dotnet-build:$DOCKER_PROD_TAG  && docker push inforitnl/dotnet-build:latest && docker push inforitnl/dotnet-build:$DOCKER_PROD_TAG"
   },
   "repository": {
     "type": "git",

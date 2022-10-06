@@ -9,22 +9,21 @@ Docker image to automate dotnet builds
 1. update dockerfile, and version number in package.json
 2. build local version:
 
-   ```sh
-   docker build -t inforitnl/dotnet-build .
-   ```
+    ```sh
+    npm run build
+    ```
 
 3. push new version to dockerhub:
 
-   ```sh
-   docker push inforitnl/dotnet-build
-   ```
+    ```sh
+    npm run push
+    ```
 
 4. tag and push again (optional but recommended):
 
-   ```sh
-   docker tag inforitnl/dotnet-build inforitnl/dotnet-build:1
-   docker push inforitnl/dotnet-build:1
-   ```
+    ```sh
+    npm run publish
+    ```
 
 ## Usage
 
