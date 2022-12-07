@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated to NET 7
 - Removed patheems (Patrick Heemskerk) as reviewer
 
+## [7.2.0]
+
+- Updated docker-compose to version 2
+- Added dotnet-coverage & dotnet-format as a global tool
+
 ## [7.1.0]
 
 - Added firefox and chrome as headless e2e testing options
