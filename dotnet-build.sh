@@ -26,7 +26,7 @@ if [ -n "$MYGET_ACCESS_TOKEN" ]; then
   fi
 fi
 
-CS_PROJECT_FILE="Api/Api.csproj"
+CS_PROJECT_FILE="src/Api/Api.csproj"
 CS_PROJECT_NAME="Api"
 DIST="./dist"
 RELEASE="Release"
@@ -36,7 +36,7 @@ if [ -n "$PROJECT_NAME" ]; then
   CS_PROJECT_NAME="$PROJECT_NAME"
 fi
 
-# change project file location from default "Api.csproj" if specified
+# change project file location from default "src/Api/Api.csproj" if specified
 if [ -n "$PROJECT_FILE" ]; then
   CS_PROJECT_FILE="$PROJECT_FILE"
 fi

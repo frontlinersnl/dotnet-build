@@ -1,6 +1,6 @@
 {
   "name": "dotnet-build",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "description": "[![logo](./logo.jpg)](https://inforit.nl)",
   "main": "index.js",
   "scripts": {
