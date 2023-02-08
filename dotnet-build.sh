@@ -61,7 +61,7 @@ dotnet restore "$CS_PROJECT_FILE"
 
 # build project
 echo "building $CS_PROJECT_FILE"
-dotnet build -c $RELEASE --no-restore "$CS_PROJECT_FILE"
+dotnet build --configuration $RELEASE --no-restore "$CS_PROJECT_FILE"
 
 # run tests
 shopt -s nocaseglob # disable casing
@@ -69,7 +69,7 @@ echo "running tests"
 for f in *.test/*.csproj; do
   echo "Processing $f file..."
   dotnet add "$f" package JUnitTestLogger
-  dotnet test "$f" --logger "junit" -c $RELEASE -r "$DIST/test-results" /p:CollectCoverage=true /p:CoverletOutputFormat="opencover" /p:CoverletOutput="$DIST/test-coverlet"
+  dotnet test "$f" --logger "junit" --configuration $RELEASE --results-directory "$DIST/test-results" /p:CollectCoverage=true /p:CoverletOutputFormat="opencover" /p:CoverletOutput="$DIST/test-coverlet"
 done
 shopt -u nocaseglob # enable casing
 
@@ -78,7 +78,7 @@ reportgenerator -reports:"**/*.opencover*.xml" -targetdir:"$DIST/coverage" -repo
 
 # publish
 echo "publishing $CS_PROJECT_FILE"
-dotnet publish -c $RELEASE -o "$PROJECT_DIST" "$CS_PROJECT_FILE"
+dotnet publish --configuration $RELEASE --output "$PROJECT_DIST" "$CS_PROJECT_FILE"
 
 # copy deployment files over
 if [ -d "deployment/" ]; then
