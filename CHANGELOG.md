@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.0.0]
+
+- Updated various internally used packages
+  - NodeJS from LTS 16 to LTS 18 (this is a major break, permissive rmdirs are removed)
+  - Java from 11 to 17
+  - because of the rebuild chrome, firefox and a load of other packages are also updated to their latest versions
+
 ## [8.1.0]
 
 - Updated docker-compose to v2.16.0
