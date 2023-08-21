@@ -17,11 +17,12 @@ steps:
       - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
       - apk add --no-cache bash
       - bash docker-publish.sh
-    # when:
-    #   branch:
-    #     - master
-    #   event:
-    #     - push
+    when:
+      branch:
+        - master
+        - feature/drone*
+      event:
+        - push
 
 services:
   - name: docker
