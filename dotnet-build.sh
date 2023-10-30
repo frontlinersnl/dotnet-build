@@ -17,16 +17,16 @@ fi
 
 # Add nuget source if access token is set
 if [ -n "$MYGET_ACCESS_TOKEN" ]; then
-  NUGET_CONFIG="~/.nuget/NuGet/NuGet.Config"
+  NUGET_CONFIG=~/.nuget/NuGet/NuGet.Config
   echo "Adding private myget source"
   SOURCE="https://www.myget.org/F/inforit/auth/$MYGET_ACCESS_TOKEN/api/v3/index.json"
-  if ! grep -q "$SOURCE" "$NUGET_CONFIG"; then
-    VAR=$(sed "/<\/packageSources>/i <add key=\"Inforit MyGet package source\" value=\"$SOURCE\" protocolVersion=\"3\" />" ~/.nuget/NuGet/NuGet.Config)
-    echo "$VAR" >~/.nuget/NuGet/NuGet.Config
+  if ! grep -q "$SOURCE" $NUGET_CONFIG; then
+    VAR=$(sed "/<\/packageSources>/i <add key=\"Inforit MyGet package source\" value=\"$SOURCE\" protocolVersion=\"3\" />" $NUGET_CONFIG)
+    echo "$VAR" >$NUGET_CONFIG
   fi
 fi
 
-CS_PROJECT_FILE="Api/Api.csproj"
+CS_PROJECT_FILE="${CS_PROJECT_FILE:-"src/Api/Api.csproj"}"
 CS_PROJECT_NAME="Api"
 DIST="./dist"
 RELEASE="Release"

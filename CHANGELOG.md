@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.0.0]
+
+- default csproj path now set to src/Api.csproj
+  - can be customized with env variable "CS_PROJECT_FILE"
+- dotnet-build now no longer uses `"` to prevent word splitting on the nuget config path
+
 ## [9.1.0]
 
 - container now explicitly installs nuget by default
