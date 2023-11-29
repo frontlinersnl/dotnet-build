@@ -19,9 +19,9 @@ fi
 if [ -n "$MYGET_ACCESS_TOKEN" ]; then
   NUGET_CONFIG=~/.nuget/NuGet/NuGet.Config
   echo "Adding private myget source"
-  SOURCE="https://www.myget.org/F/inforit/auth/$MYGET_ACCESS_TOKEN/api/v3/index.json"
+  SOURCE="https://www.myget.org/F/frontliners/auth/$MYGET_ACCESS_TOKEN/api/v3/index.json"
   if ! grep -q "$SOURCE" $NUGET_CONFIG; then
-    VAR=$(sed "/<\/packageSources>/i <add key=\"Inforit MyGet package source\" value=\"$SOURCE\" protocolVersion=\"3\" />" $NUGET_CONFIG)
+    VAR=$(sed "/<\/packageSources>/i <add key=\"Frontliners MyGet package source\" value=\"$SOURCE\" protocolVersion=\"3\" />" $NUGET_CONFIG)
     echo "$VAR" >$NUGET_CONFIG
   fi
 fi
