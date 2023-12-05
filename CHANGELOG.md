@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [11.0.0]
 
+- [BREAKING] Renamed Inforit to Frontliners
 - [BREAKING] Updated to NET 8 SDK container
 - Added NET 7 runtime so NET 7 projects can still run (for example the multi target nuget package tests)
 

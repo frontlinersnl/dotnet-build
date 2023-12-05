@@ -1,22 +1,22 @@
 {
   "name": "dotnet-build",
   "version": "11.0.0",
-  "description": "[![logo](./logo.jpg)](https://inforit.nl)",
+  "description": "[![logo](./logo.jpg)](https://frontliners.nl)",
   "main": "index.js",
   "scripts": {
-    "build": "docker build -t inforitnl/dotnet-build .",
-    "tag": "docker tag inforitnl/dotnet-build",
-    "push": "docker push inforitnl/dotnet-build",
-    "publish": "DOCKER_PROD_TAG=$(cat package.json | grep version | head -1  | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && docker build -t inforitnl/dotnet-build . && docker tag inforitnl/dotnet-build inforitnl/dotnet-build:latest && docker tag inforitnl/dotnet-build inforitnl/dotnet-build:$DOCKER_PROD_TAG  && docker push inforitnl/dotnet-build:latest && docker push inforitnl/dotnet-build:$DOCKER_PROD_TAG"
+    "build": "docker build -t frontliners/dotnet-build .",
+    "tag": "docker tag frontliners/dotnet-build",
+    "push": "docker push frontliners/dotnet-build",
+    "publish": "DOCKER_PROD_TAG=$(cat package.json | grep version | head -1  | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && docker build -t frontliners/dotnet-build . && docker tag frontliners/dotnet-build frontliners/dotnet-build:latest && docker tag frontliners/dotnet-build frontliners/dotnet-build:$DOCKER_PROD_TAG && docker push frontliners/dotnet-build:latest && docker push frontliners/dotnet-build:$DOCKER_PROD_TAG"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Inforitnl/dotnet-build.git"
+    "url": "git+https://github.com/frontlinersnl/dotnet-build.git"
   },
   "author": "Rick van Lieshout <info@rickvanlieshout.com> (http://rickvanlieshout.com)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Inforitnl/dotnet-build/issues"
+    "url": "https://github.com/frontlinersnl/dotnet-build/issues"
   },
-  "homepage": "https://github.com/Inforitnl/dotnet-build#readme"
+  "homepage": "https://github.com/frontlinersnl/dotnet-build#readme"
 }
