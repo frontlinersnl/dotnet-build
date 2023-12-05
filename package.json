@@ -1,6 +1,6 @@
 {
   "name": "dotnet-build",
-  "version": "7.3.0",
+  "version": "7.2.0-frontliners",
   "description": "[![logo](./logo.jpg)](https://frontliners.nl)",
   "main": "index.js",
   "scripts": {
