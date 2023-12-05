@@ -13,6 +13,7 @@ updates:
       - "Mastermindzh"
       - "pascal89"
       - "HBTeun"
+      - "patheems"
     labels:
       - "docker"
     open-pull-requests-limit: 1
