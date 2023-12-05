@@ -1,6 +1,6 @@
 # bitbucket-pipelines dotnet-build
 
-[![logo](./logo.jpg)](https://inforit.nl)
+[![logo](./logo.jpg)](https://frontliners.nl)
 
 Docker image to automate dotnet builds
 
@@ -28,7 +28,7 @@ Docker image to automate dotnet builds
 ## Usage
 
 ```sh
-image: inforitnl/dotnet-build
+image: frontliners/dotnet-build
 
 pipelines:
   default:
