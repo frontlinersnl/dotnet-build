@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0.100-1-bookworm-slim-amd64
+FROM mcr.microsoft.com/dotnet/sdk:8.0
 
 # "install" the dotnet 7 runtime so we can also run the NET 7 tests
 COPY --from=mcr.microsoft.com/dotnet/sdk:7.0.404-1-bookworm-slim-amd64 /usr/share/dotnet/shared /usr/share/dotnet/shared
@@ -14,6 +14,7 @@ RUN mkdir -p /usr/share/man/man1 \
   wget \
   dpkg \ 
   zip \
+  make \
   ca-certificates \
   && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
   && apt-get install --no-install-recommends -y nodejs \
