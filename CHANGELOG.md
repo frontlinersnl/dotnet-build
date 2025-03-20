@@ -5,9 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.0.0]
+
+- Updated to NET 9 SDK Container
+- Update to Node 20
+- Update Docker Compose to v2.29.7
+- Removed not working code coverage report generation
+- [BREAKING] Removed dotnet tools global. These are moved to the project repo as local. This makes it easier to update or change.
+- [BREAKING] Dropped NET 7 support
+
 ## [11.0.1]
 
-Added make as a dependency
+- Added make as a dependency
 
 ## [11.0.0]
 
