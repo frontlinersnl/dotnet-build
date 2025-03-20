@@ -1,6 +1,6 @@
 # bitbucket-pipelines dotnet-build
 
-[![logo](./logo.jpg)](https://frontliners.nl)
+[![logo](./logo.png)](https://frontliners.nl)
 
 Docker image to automate dotnet builds
 
