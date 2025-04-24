@@ -27,7 +27,7 @@ RUN apt-get update \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # install docker-compose
-RUN curl -L "https://github.com/docker/compose/releases/download/v2.29.7/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
+RUN curl -L "https://github.com/docker/compose/releases/download/v2.35.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
   && chmod +x /usr/local/bin/docker-compose
 
 # install Chromium for (unit)-testing during build-phase
