@@ -26,6 +26,17 @@ if [ -n "$MYGET_ACCESS_TOKEN" ]; then
   fi
 fi
 
+# Add custom NuGet source if specified
+if [ -n "$NUGET_SOURCE_URI" ]; then
+  if [ -n "$NUGET_SOURCE_USERNAME" ] && [ -n "$NUGET_SOURCE_PASSWORD" ]; then
+    echo "Adding custom NuGet source"
+    dotnet nuget add source "$NUGET_SOURCE_URI" --name "CustomSource" --username "$NUGET_SOURCE_USERNAME" --password "$NUGET_SOURCE_PASSWORD" --store-password-in-clear-text
+  else
+    echo "Adding custom NuGet source without credentials"
+    dotnet nuget add source "$NUGET_SOURCE_URI" --name "CustomSource"
+  fi
+fi
+
 CS_PROJECT_FILE="${CS_PROJECT_FILE:-"src/Api/Api.csproj"}"
 CS_PROJECT_NAME="Api"
 DIST="./dist"

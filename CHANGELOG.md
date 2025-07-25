@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [12.1.0]
 
 - Updated Docker Compose to v2.38.2
+- Added logic to add a NuGet source other than MyGet
 
 ## [12.0.1]
 
