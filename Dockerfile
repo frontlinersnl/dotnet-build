@@ -1,7 +1,7 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0
+FROM mcr.microsoft.com/dotnet/sdk:10.0
 
 # "install" the dotnet 8 runtime so we can also run the NET 8 tests
-COPY --from=mcr.microsoft.com/dotnet/sdk:8.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
+COPY --from=mcr.microsoft.com/dotnet/sdk:9.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
 
 # install base software
 RUN mkdir -p /usr/share/man/man1 \
@@ -16,7 +16,7 @@ RUN mkdir -p /usr/share/man/man1 \
   zip \
   make \
   ca-certificates \
-  && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+  && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
   && apt-get install --no-install-recommends -y nodejs \
   && apt-get install -y --no-install-recommends nuget libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb procps\
   && apt-get clean && rm -rf /var/lib/apt/lists/*
