@@ -23,7 +23,7 @@ RUN mkdir -p /usr/share/man/man1 \
 
 # install modern version of java
 RUN apt-get update \
-  && apt-get install --no-install-recommends -y openjdk-17-jdk openjdk-17-jre \
+  && apt-get install --no-install-recommends -y openjdk-25-jdk openjdk-25-jre \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # install docker-compose
