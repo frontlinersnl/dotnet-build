@@ -11,10 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update nodejs to v24
 - Update openjdk to v25
 - Update docker compose to v2.40.3
-- Moved the GUI libs for headless testing out from node step into its own
-  - Removed libgconf-2-4 and libasound2 because they are not available on Ubuntu
-- BREAKING: Dropped support for .NET 8
-- BREAKING: Removed Firefox-esr
+- Update and move the GUI libs for headless testing out from node step into its own
+  - BREAKING: Dropped support for .NET 8
 
 ## [12.1.0]
 

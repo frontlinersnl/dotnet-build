@@ -29,9 +29,9 @@ RUN apt-get update \
 RUN curl -L "https://github.com/docker/compose/releases/download/v2.40.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
   && chmod +x /usr/local/bin/docker-compose
 
-# install GUI libs for headless browser testing
+# install GUI libs for headless browser testing (Cypress)
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libxtst6 xauth xvfb procps \
+  && apt-get install -y --no-install-recommends libgtk-3-0t64 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # install Chromium for (unit)-testing during build-phase
@@ -40,9 +40,9 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # install Firefox for (unit)-testing during build-phase
-# RUN apt-get update \
-#   && apt-get install -y --no-install-recommends firefox-esr \
-#   && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends firefox \
+  && rm -rf /var/lib/apt/lists/*
 
 # Set workdir alias
 WORKDIR /api
