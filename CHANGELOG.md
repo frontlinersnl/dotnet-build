@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved the GUI libs for headless testing out from node step into its own
   - Removed libgconf-2-4 and libasound2 because they are not available on Ubuntu
 - BREAKING: Dropped support for .NET 8
+- BREAKING: Removed Firefox-esr
 
 ## [12.1.0]
 

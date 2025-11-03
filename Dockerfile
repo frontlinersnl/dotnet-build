@@ -40,9 +40,9 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # install Firefox for (unit)-testing during build-phase
-RUN apt-get update && \
-  apt-get install -y --no-install-recommends firefox-esr && \
-  rm -rf /var/lib/apt/lists/*
+# RUN apt-get update \
+#   && apt-get install -y --no-install-recommends firefox-esr \
+#   && rm -rf /var/lib/apt/lists/*
 
 # Set workdir alias
 WORKDIR /api
