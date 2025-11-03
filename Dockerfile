@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0
 
-# "install" the dotnet 8 runtime so we can also run the NET 8 tests
+# "install" the dotnet 9 runtime so we can also run the NET 9 tests
 COPY --from=mcr.microsoft.com/dotnet/sdk:9.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
 
 # install base software
@@ -35,9 +35,9 @@ RUN apt-get update \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # install Chromium for (unit)-testing during build-phase
-RUN apt-get update && \
-  apt-get install -y --no-install-recommends chromium && \
-  rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends chromium \
+  && rm -rf /var/lib/apt/lists/*
 
 # install Firefox for (unit)-testing during build-phase
 RUN apt-get update && \
