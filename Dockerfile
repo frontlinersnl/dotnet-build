@@ -1,7 +1,7 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0
+FROM mcr.microsoft.com/dotnet/sdk:10.0
 
-# "install" the dotnet 8 runtime so we can also run the NET 8 tests
-COPY --from=mcr.microsoft.com/dotnet/sdk:8.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
+# "install" the dotnet 9 runtime so we can also run the NET 9 tests
+COPY --from=mcr.microsoft.com/dotnet/sdk:9.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
 
 # install base software
 RUN mkdir -p /usr/share/man/man1 \
@@ -16,29 +16,33 @@ RUN mkdir -p /usr/share/man/man1 \
   zip \
   make \
   ca-certificates \
-  && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+  && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
   && apt-get install --no-install-recommends -y nodejs \
-  && apt-get install -y --no-install-recommends nuget libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb procps\
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # install modern version of java
 RUN apt-get update \
-  && apt-get install --no-install-recommends -y openjdk-17-jdk openjdk-17-jre \
+  && apt-get install --no-install-recommends -y openjdk-25-jdk openjdk-25-jre \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # install docker-compose
-RUN curl -L "https://github.com/docker/compose/releases/download/v2.38.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
+RUN curl -L "https://github.com/docker/compose/releases/download/v2.40.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
   && chmod +x /usr/local/bin/docker-compose
 
+# install GUI libs for headless browser testing (Cypress)
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends libgtk-3-0t64 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # install Chromium for (unit)-testing during build-phase
-RUN apt-get update && \
-  apt-get install -y --no-install-recommends chromium && \
-  rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends chromium \
+  && rm -rf /var/lib/apt/lists/*
 
 # install Firefox for (unit)-testing during build-phase
-RUN apt-get update && \
-  apt-get install -y --no-install-recommends firefox-esr && \
-  rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends firefox \
+  && rm -rf /var/lib/apt/lists/*
 
 # Set workdir alias
 WORKDIR /api
