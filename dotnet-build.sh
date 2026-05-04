@@ -15,7 +15,7 @@ else
   cd "$ROOTDIRECTORY" || return
 fi
 
-# Add nuget source if access token is set
+# Add myget source if access token is set
 if [ -n "$MYGET_ACCESS_TOKEN" ]; then
   NUGET_CONFIG=~/.nuget/NuGet/NuGet.Config
   echo "Adding private myget source"
@@ -24,6 +24,13 @@ if [ -n "$MYGET_ACCESS_TOKEN" ]; then
     VAR=$(sed "/<\/packageSources>/i <add key=\"Frontliners MyGet package source\" value=\"$SOURCE\" protocolVersion=\"3\" />" $NUGET_CONFIG)
     echo "$VAR" >$NUGET_CONFIG
   fi
+fi
+
+# Add BaGet NuGet source if source URI, username and API key are set..
+if [ -n "$BAGET_SOURCE_URI" ] && [ -n "$BAGET_USERNAME" ] && [ -n "$BAGET_PASSWORD" ] ; then
+  BAGET_SOURCE_NAME="${BAGET_SOURCE_NAME:-"baget"}"
+  echo "Adding BaGet NuGet source ($BAGET_SOURCE_NAME)"
+  dotnet nuget add source "$BAGET_SOURCE_URI" --name "$BAGET_SOURCE_NAME" --username "$BAGET_USERNAME" --password "$BAGET_PASSWORD" --store-password-in-clear-text
 fi
 
 # Add custom NuGet source if specified
