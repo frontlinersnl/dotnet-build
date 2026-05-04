@@ -26,6 +26,13 @@ if [ -n "$MYGET_ACCESS_TOKEN" ]; then
   fi
 fi
 
+# Add BaGet NuGet source if both API key and source URI are set
+if [ -n "$BAGET_API_KEY" ] && [ -n "$BAGET_SOURCE_URI" ]; then
+  BAGET_SOURCE_NAME="${BAGET_SOURCE_NAME:-"BaGet"}"
+  echo "Adding BaGet NuGet source ($BAGET_SOURCE_NAME)"
+  dotnet nuget add source "$BAGET_SOURCE_URI" --name "$BAGET_SOURCE_NAME" --username "anything" --password "$BAGET_API_KEY" --store-password-in-clear-text
+fi
+
 # Add custom NuGet source if specified
 if [ -n "$NUGET_SOURCE_URI" ]; then
   if [ -n "$NUGET_SOURCE_USERNAME" ] && [ -n "$NUGET_SOURCE_PASSWORD" ]; then

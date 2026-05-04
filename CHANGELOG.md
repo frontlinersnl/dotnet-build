@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [13.2.0]
+
+- Added support for adding a BaGet NuGet source with a read API key
+  - Enabled by setting both `BAGET_API_KEY` and `BAGET_SOURCE_URI`
+  - Source name defaults to `BaGet` and can be overridden via `BAGET_SOURCE_NAME`
+
+## [13.0.0]
+
+- Upgrade to .NET 10
+- Update nodejs to v24
+- Update openjdk to v25
+- Update docker compose to v2.40.3
+- Update and move the GUI libs for headless testing out from node step into its own
+  - BREAKING: Dropped support for .NET 8
+
 ## [12.1.0]
 
 - Updated Docker Compose to v2.38.2
