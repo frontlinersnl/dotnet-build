@@ -7,9 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [13.1.0]
 
-- Added support for adding a BaGet NuGet source with a read API key
-  - Enabled by setting both `BAGET_API_KEY` and `BAGET_SOURCE_URI`
-  - Source name defaults to `BaGet` and can be overridden via `BAGET_SOURCE_NAME`
+- Added support for adding a BaGet NuGet source
+  - Enabled by setting `BAGET_SOURCE_URI`, `BAGET_USERNAME` and `BAGET_PASSWORD`
+  - The API key is registered as the basic-auth password (BaGet's read auth scheme)
+  - Source name defaults to `baget` and can be overridden via `BAGET_SOURCE_NAME`
 
 ## [13.0.0]
 
