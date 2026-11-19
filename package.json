@@ -1,13 +1,16 @@
 {
   "name": "dotnet-build",
-  "version": "13.1.0",
+  "version": "14.0.0",
   "description": "[![logo](./logo.jpg)](https://frontliners.nl)",
   "main": "index.js",
   "scripts": {
-    "build": "docker build -t frontliners/dotnet-build .",
+    "build": "node scripts/image.cjs build full",
     "tag": "docker tag frontliners/dotnet-build",
-    "push": "docker push frontliners/dotnet-build",
-    "publish": "DOCKER_PROD_TAG=$(cat package.json | grep version | head -1  | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && docker build -t frontliners/dotnet-build . && docker tag frontliners/dotnet-build frontliners/dotnet-build:latest && docker tag frontliners/dotnet-build frontliners/dotnet-build:$DOCKER_PROD_TAG && docker push frontliners/dotnet-build:latest && docker push frontliners/dotnet-build:$DOCKER_PROD_TAG"
+    "push": "node scripts/image.cjs push full",
+    "publish": "node scripts/image.cjs publish full",
+    "build:slim": "node scripts/image.cjs build slim",
+    "push:slim": "node scripts/image.cjs push slim",
+    "publish:slim": "node scripts/image.cjs publish slim"
   },
   "repository": {
     "type": "git",

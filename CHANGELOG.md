@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.0.0]
+
+- Parameterize full and slim image builds with one SDK and optional additional runtimes.
+- Add a slim SDK 11 image with .NET 10 and 11 runtimes to the existing Frontliners Docker Hub repository using the shared build script version as its tag prefix.
+- Upgrade to .NET 11
+- Removed the test run from `dotnet-build.sh` as this already runs as a Bitbucket pipeline step.
+- Add `-mt` parameter to `dotnet build` to activate multi-threading
+
 ## [13.1.0]
 
 - Added support for adding a BaGet NuGet source

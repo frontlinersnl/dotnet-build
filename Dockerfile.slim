@@ -1,0 +1,17 @@
+ARG SDK_VERSION=11.0
+FROM mcr.microsoft.com/dotnet/sdk:${SDK_VERSION}
+
+# BEGIN additional runtimes
+COPY --from=mcr.microsoft.com/dotnet/aspnet:10.0 /usr/share/dotnet/shared/ /usr/share/dotnet/shared/
+# END additional runtimes
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends zip \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV DOTNET_ROOT=/usr/share/dotnet
+ENV PATH="${PATH}:/root/.dotnet/tools"
+WORKDIR /api
+
+COPY --chmod=755 dotnet-build.sh entrypoint.sh /
+CMD ["/entrypoint.sh"]
