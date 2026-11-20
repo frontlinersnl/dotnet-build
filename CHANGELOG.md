@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [14.0.0]
 
+- Select a Dockerfile variant and SDK explicitly for build, push and publish. Rename the slim variant to dotnet-only. Publish one version-prefixed tag per image profile with an explicit variant suffix and group additional runtime versions with underscores.
+
 - Parameterize full and slim image builds with one SDK and optional additional runtimes.
 - Add a slim SDK 11 image with .NET 10 and 11 runtimes to the existing Frontliners Docker Hub repository using the shared build script version as its tag prefix.
 - Upgrade to .NET 11

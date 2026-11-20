@@ -4,13 +4,9 @@
   "description": "[![logo](./logo.jpg)](https://frontliners.nl)",
   "main": "index.js",
   "scripts": {
-    "build": "node scripts/image.cjs build full",
-    "tag": "docker tag frontliners/dotnet-build",
-    "push": "node scripts/image.cjs push full",
-    "publish": "node scripts/image.cjs publish full",
-    "build:slim": "node scripts/image.cjs build slim",
-    "push:slim": "node scripts/image.cjs push slim",
-    "publish:slim": "node scripts/image.cjs publish slim"
+    "build": "node scripts/image.cjs build",
+    "push": "node scripts/image.cjs push",
+    "publish": "node scripts/image.cjs publish"
   },
   "repository": {
     "type": "git",
