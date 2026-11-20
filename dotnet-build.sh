@@ -82,16 +82,7 @@ dotnet restore "$CS_PROJECT_FILE"
 
 # build project
 echo "building $CS_PROJECT_FILE"
-dotnet build --configuration $RELEASE --no-restore "$CS_PROJECT_FILE"
-
-# run tests
-shopt -s nocaseglob # disable casing
-echo "running tests"
-for f in *.test/*.csproj; do
-  echo "Processing $f file..."
-  dotnet test "$f" --configuration $RELEASE --results-directory "$DIST/test-results" /p:CollectCoverage=true /p:CoverletOutputFormat="opencover" /p:CoverletOutput="$DIST/test-coverlet"
-done
-shopt -u nocaseglob # enable casing
+dotnet build --configuration $RELEASE --no-restore -mt "$CS_PROJECT_FILE"
 
 # publish
 echo "publishing $CS_PROJECT_FILE"

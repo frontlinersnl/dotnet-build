@@ -1,7 +1,9 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0
+ARG SDK_VERSION=11.0
+FROM mcr.microsoft.com/dotnet/sdk:${SDK_VERSION}
 
-# "install" the dotnet 9 runtime so we can also run the NET 9 tests
-COPY --from=mcr.microsoft.com/dotnet/sdk:9.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
+# BEGIN additional runtimes
+COPY --from=mcr.microsoft.com/dotnet/aspnet:10.0 /usr/share/dotnet/shared/ /usr/share/dotnet/shared/
+# END additional runtimes
 
 # install base software
 RUN mkdir -p /usr/share/man/man1 \
@@ -12,7 +14,7 @@ RUN mkdir -p /usr/share/man/man1 \
   apt-transport-https \
   gnupg \
   wget \
-  dpkg \ 
+  dpkg \
   zip \
   make \
   ca-certificates \
