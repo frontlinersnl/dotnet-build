@@ -82,7 +82,7 @@ dotnet restore "$CS_PROJECT_FILE"
 
 # build project
 echo "building $CS_PROJECT_FILE"
-dotnet build --configuration $RELEASE --no-restore -maxcpucount "$CS_PROJECT_FILE"
+dotnet build --configuration $RELEASE --no-restore -mt "$CS_PROJECT_FILE"
 
 # publish
 echo "publishing $CS_PROJECT_FILE"

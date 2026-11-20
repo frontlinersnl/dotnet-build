@@ -51,7 +51,7 @@ WORKDIR /api
 
 # Fix .netcore paths if dotnet is installed
 RUN mkdir -p ~/scripts
-COPY scripts/dotnetcore.sh /scripts/dotnetcore.sh
+COPY scripts /scripts
 RUN echo "source /scripts/dotnetcore.sh" >> ~/.bashrc
 
 # add entrypoint and run
