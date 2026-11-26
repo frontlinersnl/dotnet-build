@@ -7,7 +7,11 @@ COPY --from=mcr.microsoft.com/dotnet/aspnet:10.0 /usr/share/dotnet/shared /usr/s
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
   wget \
+  #### Start install for node-gyp (native Node addon builds) ####
+  g++ \
   make \
+  python3 \
+  #### End install for node-gyp (native Node addon builds) ####
   #### Start install for Cypress (headless browser testing GUI libs) ####
   libgtk-3-0t64 \
   libgbm-dev \
