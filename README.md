@@ -63,10 +63,10 @@ pipelines:
 
 Both [docker-publish.yml](.github/workflows/docker-publish.yml) (GitHub Actions) and [bitbucket-pipelines.yml](bitbucket-pipelines.yml) (Bitbucket Pipelines) build and push `slim` and `full` images using `docker buildx` with `--sbom=true`.
 
-Configure the following environment variables / secrets in GitHub Actions and Bitbucket Pipelines:
+Configure the following variables / secrets in GitHub Actions and Bitbucket Pipelines:
 
-- `DOCKER_USERNAME`: Docker Hub username
-- `DOCKER_PASSWORD`: Docker Hub password or access token
+- `DOCKER_USERNAME`: Docker Hub username (variable)
+- `DOCKER_PASSWORD`: Docker Hub password or access token (secret / secured variable)
 
 Tagging behavior:
 
