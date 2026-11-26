@@ -16,6 +16,7 @@ RUN apt-get update \
   python3 \
   #### End install for node-gyp (native Node addon builds) ####
   #### Start install for Cypress (headless browser testing GUI libs) ####
+  unzip \
   libgtk-3-0t64 \
   libgbm-dev \
   libnotify-dev \
