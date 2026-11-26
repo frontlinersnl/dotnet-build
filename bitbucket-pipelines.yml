@@ -1,0 +1,91 @@
+image: docker:cli
+
+definitions:
+  services:
+    docker:
+      memory: 6144
+  steps:
+    - step: &build-commit
+        name: Build and push commit images
+        size: 2x
+        services:
+          - docker
+        script:
+          - test -n "$DOCKER_USERNAME" && test -n "$DOCKER_PASSWORD"
+          - printf '%s\n' "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+          - docker buildx create --name dotnet-build-builder --driver docker-container --use
+          - docker buildx inspect --bootstrap
+          - |
+            docker buildx build \
+              --file Dockerfile.slim \
+              --tag "docker.io/frontliners/dotnet-build:${BITBUCKET_COMMIT}-slim" \
+              --sbom=true \
+              --push \
+              .
+          - |
+            docker buildx build \
+              --file Dockerfile \
+              --build-arg "BASE_IMAGE=docker.io/frontliners/dotnet-build:${BITBUCKET_COMMIT}-slim" \
+              --tag "docker.io/frontliners/dotnet-build:${BITBUCKET_COMMIT}-full" \
+              --sbom=true \
+              --push \
+              .
+
+    - step: &build-master
+        name: Tag git commit, build and push stable images
+        size: 2x
+        services:
+          - docker
+        script:
+          - |
+            VERSION=$(sed -n 's/^[[:space:]]*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' package.json | head -n 1)
+            test -n "$VERSION"
+            MAJOR_MINOR="${VERSION%.*}"
+            MAJOR="${VERSION%%.*}"
+
+            if git ls-remote --exit-code --tags origin "refs/tags/${VERSION}" >/dev/null 2>&1; then
+              echo "Git tag ${VERSION} already exists on origin, skipping."
+            else
+              git config user.name "Bitbucket Pipelines"
+              git config user.email "pipelines@bitbucket.org"
+              git tag -a "${VERSION}" -m "Release ${VERSION}"
+              git push origin "refs/tags/${VERSION}"
+            fi
+
+          - test -n "$DOCKER_USERNAME" && test -n "$DOCKER_PASSWORD"
+          - printf '%s\n' "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+          - docker buildx create --name dotnet-build-builder --driver docker-container --use
+          - docker buildx inspect --bootstrap
+          - |
+            docker buildx build \
+              --file Dockerfile.slim \
+              --tag "docker.io/frontliners/dotnet-build:slim" \
+              --tag "docker.io/frontliners/dotnet-build:${MAJOR}-slim" \
+              --tag "docker.io/frontliners/dotnet-build:${MAJOR_MINOR}-slim" \
+              --tag "docker.io/frontliners/dotnet-build:${VERSION}-slim" \
+              --sbom=true \
+              --push \
+              .
+
+            docker buildx build \
+              --file Dockerfile \
+              --build-arg "BASE_IMAGE=docker.io/frontliners/dotnet-build:${VERSION}-slim" \
+              --tag "docker.io/frontliners/dotnet-build:latest" \
+              --tag "docker.io/frontliners/dotnet-build:full" \
+              --tag "docker.io/frontliners/dotnet-build:${MAJOR}" \
+              --tag "docker.io/frontliners/dotnet-build:${MAJOR_MINOR}" \
+              --tag "docker.io/frontliners/dotnet-build:${VERSION}" \
+              --tag "docker.io/frontliners/dotnet-build:${MAJOR}-full" \
+              --tag "docker.io/frontliners/dotnet-build:${MAJOR_MINOR}-full" \
+              --tag "docker.io/frontliners/dotnet-build:${VERSION}-full" \
+              --sbom=true \
+              --push \
+              .
+
+pipelines:
+  default:
+    - step: *build-commit
+  branches:
+    master:
+      - step: *build-master
+      - step: *build-commit

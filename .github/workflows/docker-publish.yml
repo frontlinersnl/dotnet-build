@@ -1,0 +1,91 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - "**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        run: |
+          set -eu
+          test -n "$DOCKER_USERNAME" && test -n "$DOCKER_PASSWORD"
+          printf '%s\n' "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+
+      - name: Tag git commit, then build and push stable images (master only)
+        if: github.ref == 'refs/heads/master'
+        run: |
+          set -eu
+          VERSION=$(sed -n 's/^[[:space:]]*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' package.json | head -n 1)
+          test -n "$VERSION"
+          MAJOR_MINOR="${VERSION%.*}"
+          MAJOR="${VERSION%%.*}"
+
+          if git ls-remote --exit-code --tags origin "refs/tags/${VERSION}" >/dev/null 2>&1; then
+            echo "Git tag ${VERSION} already exists on origin, skipping."
+          else
+            git config user.name "${GITHUB_ACTOR:-github-actions[bot]}"
+            git config user.email "${GITHUB_ACTOR:-github-actions[bot]}@users.noreply.github.com"
+            git tag -a "${VERSION}" -m "Release ${VERSION}"
+            git push origin "refs/tags/${VERSION}"
+          fi
+
+          docker buildx build \
+            --file Dockerfile.slim \
+            --tag "docker.io/frontliners/dotnet-build:slim" \
+            --tag "docker.io/frontliners/dotnet-build:${MAJOR}-slim" \
+            --tag "docker.io/frontliners/dotnet-build:${MAJOR_MINOR}-slim" \
+            --tag "docker.io/frontliners/dotnet-build:${VERSION}-slim" \
+            --sbom=true \
+            --push \
+            .
+
+          docker buildx build \
+            --file Dockerfile \
+            --build-arg "BASE_IMAGE=docker.io/frontliners/dotnet-build:${VERSION}-slim" \
+            --tag "docker.io/frontliners/dotnet-build:latest" \
+            --tag "docker.io/frontliners/dotnet-build:full" \
+            --tag "docker.io/frontliners/dotnet-build:${MAJOR}" \
+            --tag "docker.io/frontliners/dotnet-build:${MAJOR_MINOR}" \
+            --tag "docker.io/frontliners/dotnet-build:${VERSION}" \
+            --tag "docker.io/frontliners/dotnet-build:${MAJOR}-full" \
+            --tag "docker.io/frontliners/dotnet-build:${MAJOR_MINOR}-full" \
+            --tag "docker.io/frontliners/dotnet-build:${VERSION}-full" \
+            --sbom=true \
+            --push \
+            .
+
+      - name: Build and push commit images (every commit)
+        run: |
+          set -eu
+          docker buildx build \
+            --file Dockerfile.slim \
+            --tag "docker.io/frontliners/dotnet-build:${GITHUB_SHA}-slim" \
+            --sbom=true \
+            --push \
+            .
+          docker buildx build \
+            --file Dockerfile \
+            --build-arg "BASE_IMAGE=docker.io/frontliners/dotnet-build:${GITHUB_SHA}-slim" \
+            --tag "docker.io/frontliners/dotnet-build:${GITHUB_SHA}-full" \
+            --sbom=true \
+            --push \
+            .
