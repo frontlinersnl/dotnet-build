@@ -58,3 +58,17 @@ pipelines:
 | push:slim  | push `:slim` and `:<version>-slim`                              |
 | push:full  | push `:latest`, `:<version>`, `:full`, and `:<version>-full`    |
 | publish    | build and push all `slim` and `full` tags                       |
+
+## CI/CD
+
+Both [docker-publish.yml](.github/workflows/docker-publish.yml) (GitHub Actions) and [bitbucket-pipelines.yml](bitbucket-pipelines.yml) (Bitbucket Pipelines) build and push `slim` and `full` images using `docker buildx` with `--sbom=true`.
+
+Configure the following environment variables / secrets in GitHub Actions and Bitbucket Pipelines:
+
+- `DOCKER_USERNAME`: Docker Hub username
+- `DOCKER_PASSWORD`: Docker Hub password or access token
+
+Tagging behavior:
+
+- Every commit (including `master` merge commits): builds and pushes `<commit-sha>-slim` and `<commit-sha>-full`.
+- `master` branch only: also builds and pushes versioned tags from `package.json` (`<major>`, `<major>.<minor>`, `<major>.<minor>.<patch>` with `-slim` and `-full` suffixes, plus bare full versions, `:slim`, `:full`, and `:latest`) and creates/pushes the git tag matching `package.json`'s `version` if it does not already exist.
