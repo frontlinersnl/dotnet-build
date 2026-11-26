@@ -4,8 +4,8 @@
 
 Docker images to automate dotnet builds:
 
-- `frontliners/dotnet-build:slim` / `frontliners/dotnet-build:<version>-slim` (`Dockerfile.slim`): minimal image containing the .NET SDK, `zip`, and build/publish scripts (`dotnet-build.sh`).
-- `frontliners/dotnet-build:latest` / `frontliners/dotnet-build:full` / `frontliners/dotnet-build:<version>` / `frontliners/dotnet-build:<version>-full` (`Dockerfile`): full image built on top of `slim`, adding the .NET 10 runtime, Node.js, OpenJDK, Docker Compose, and headless browser testing tools (Cypress GUI libraries, Chromium, Firefox).
+- `frontliners/dotnet-build:slim` / `frontliners/dotnet-build:<version>-slim` (`Dockerfile.slim`): minimal image containing the .NET SDK, Node.js, `zip`, and build/publish scripts (`dotnet-build.sh`).
+- `frontliners/dotnet-build:latest` / `frontliners/dotnet-build:full` / `frontliners/dotnet-build:<version>` / `frontliners/dotnet-build:<version>-full` (`Dockerfile`): full image built on top of `slim`, adding the .NET 10 runtime, OpenJDK, Docker Compose, and headless browser testing tools (Cypress GUI libraries, Chromium, Firefox).
 
 ## Instructions
 

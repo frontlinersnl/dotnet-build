@@ -5,6 +5,18 @@ RUN apt-get update \
   && apt-get install --no-install-recommends -y \
   # Required by dotnet-build.sh to package published artifacts into a .zip archive
   zip \
+  #### Start install for Node.js (NodeSource setup prerequisites) ####
+  # Used to download the NodeSource setup script
+  curl \
+  apt-transport-https \
+  gnupg \
+  dpkg \
+  ca-certificates \
+  #### End install for Node.js (NodeSource setup prerequisites) ####
+  && curl -fsSL https://deb.nodesource.com/setup_26.x | bash - \
+  && apt-get install --no-install-recommends -y \
+  # Node.js and npm
+  nodejs \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Set workdir alias

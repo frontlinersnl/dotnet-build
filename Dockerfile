@@ -8,18 +8,8 @@ COPY --from=mcr.microsoft.com/dotnet/aspnet:10.0 /usr/share/dotnet/shared /usr/s
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7 \
   && apt-get update \
   && apt-get install --no-install-recommends -y \
-  # Used to download the NodeSource setup script and docker-compose binary
-  curl \
-  apt-transport-https \
-  gnupg \
   wget \
-  dpkg \
   make \
-  ca-certificates \
-  && curl -fsSL https://deb.nodesource.com/setup_26.x | bash - \
-  && apt-get install --no-install-recommends -y \
-  # Node.js and npm
-  nodejs \
   # Java runtime (JRE) for Java-based CI tools such as dotnet-sonarscanner
   openjdk-25-jre-headless \
   #### Start install for Cypress (headless browser testing GUI libs) ####
