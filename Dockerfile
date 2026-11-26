@@ -4,14 +4,10 @@ FROM ${BASE_IMAGE}
 # "install" the dotnet 10 runtime so we can also run the NET 10 tests
 COPY --from=mcr.microsoft.com/dotnet/aspnet:10.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
 
-# Create man dirs needed by OpenJDK packages on slim base images
-RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7 \
-  && apt-get update \
+RUN apt-get update \
   && apt-get install --no-install-recommends -y \
   wget \
   make \
-  # Java runtime (JRE) for Java-based CI tools such as dotnet-sonarscanner
-  openjdk-25-jre-headless \
   #### Start install for Cypress (headless browser testing GUI libs) ####
   libgtk-3-0t64 \
   libgbm-dev \
