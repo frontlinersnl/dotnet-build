@@ -1,4 +1,5 @@
-FROM mcr.microsoft.com/dotnet/sdk:11.0
+ARG BASE_IMAGE=frontliners/dotnet-build:slim
+FROM ${BASE_IMAGE}
 
 # "install" the dotnet 10 runtime so we can also run the NET 10 tests
 COPY --from=mcr.microsoft.com/dotnet/sdk:10.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
@@ -12,8 +13,7 @@ RUN mkdir -p /usr/share/man/man1 \
   apt-transport-https \
   gnupg \
   wget \
-  dpkg \ 
-  zip \
+  dpkg \
   make \
   ca-certificates \
   && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
@@ -43,18 +43,3 @@ RUN apt-get update \
 RUN apt-get update \
   && apt-get install -y --no-install-recommends firefox \
   && rm -rf /var/lib/apt/lists/*
-
-# Set workdir alias
-WORKDIR /api
-
-# Fix .netcore paths if dotnet is installed
-RUN mkdir -p ~/scripts
-COPY scripts /scripts
-RUN echo "source /scripts/dotnetcore.sh" >> ~/.bashrc
-
-# add entrypoint and run
-COPY dotnet-build.sh /dotnet-build.sh
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /dotnet-build.sh
-RUN chmod +x /entrypoint.sh
-CMD ["/bin/bash","-i", "/entrypoint.sh"]

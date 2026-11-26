@@ -4,10 +4,14 @@
   "description": "[![logo](./logo.jpg)](https://frontliners.nl)",
   "main": "index.js",
   "scripts": {
-    "build": "docker build -t frontliners/dotnet-build .",
+    "build:slim": "docker build -f Dockerfile.slim -t frontliners/dotnet-build:slim .",
+    "build:full": "docker build --build-arg BASE_IMAGE=frontliners/dotnet-build:slim -t frontliners/dotnet-build:latest -t frontliners/dotnet-build:full .",
+    "build": "npm run build:slim && npm run build:full",
     "tag": "docker tag frontliners/dotnet-build",
-    "push": "docker push frontliners/dotnet-build",
-    "publish": "DOCKER_PROD_TAG=$(cat package.json | grep version | head -1  | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && docker build -t frontliners/dotnet-build . && docker tag frontliners/dotnet-build frontliners/dotnet-build:latest && docker tag frontliners/dotnet-build frontliners/dotnet-build:$DOCKER_PROD_TAG && docker push frontliners/dotnet-build:latest && docker push frontliners/dotnet-build:$DOCKER_PROD_TAG"
+    "push:slim": "docker push frontliners/dotnet-build:slim",
+    "push:full": "docker push frontliners/dotnet-build:latest && docker push frontliners/dotnet-build:full",
+    "push": "npm run push:slim && npm run push:full",
+    "publish": "DOCKER_PROD_TAG=$(cat package.json | grep version | head -1 | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && docker build -f Dockerfile.slim -t frontliners/dotnet-build:slim -t frontliners/dotnet-build:$DOCKER_PROD_TAG-slim . && docker build --build-arg BASE_IMAGE=frontliners/dotnet-build:$DOCKER_PROD_TAG-slim -t frontliners/dotnet-build:latest -t frontliners/dotnet-build:$DOCKER_PROD_TAG -t frontliners/dotnet-build:full -t frontliners/dotnet-build:$DOCKER_PROD_TAG-full . && docker push frontliners/dotnet-build:slim && docker push frontliners/dotnet-build:$DOCKER_PROD_TAG-slim && docker push frontliners/dotnet-build:latest && docker push frontliners/dotnet-build:$DOCKER_PROD_TAG && docker push frontliners/dotnet-build:full && docker push frontliners/dotnet-build:$DOCKER_PROD_TAG-full"
   },
   "repository": {
     "type": "git",
