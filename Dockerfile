@@ -1,6 +1,9 @@
 ARG BASE_IMAGE=frontliners/dotnet-build:slim
 FROM ${BASE_IMAGE}
 
+# Make sure that if a RUN command failed while it has a pipe to another command which succeeds, the failure is not ignored
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # "install" the dotnet 10 runtime so we can also run the NET 10 tests
 COPY --from=mcr.microsoft.com/dotnet/aspnet:10.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
 

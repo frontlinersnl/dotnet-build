@@ -1,5 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:11.0
 
+# Make sure that if a RUN command failed while it has a pipe to another command which succeeds, the failure is not ignored
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # install dependencies required for dotnet build and publish
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
