@@ -54,10 +54,10 @@ pipelines:
 | build      | build and version-tag both `slim` and `full` (`latest`) images  |
 | build:slim | build only the `slim` image (`:slim`, `:<version>-slim`)        |
 | build:full | build only the `full` image (`:latest`, `:<version>`, `:full`, `:<version>-full`) on top of `slim` |
-| push       | push all `slim` and `full` tags                                 |
-| push:slim  | push `:slim` and `:<version>-slim`                              |
-| push:full  | push `:latest`, `:<version>`, `:full`, and `:<version>-full`    |
-| publish    | build and push all `slim` and `full` tags                       |
+| push       | push versioned `slim` and `full` tags                                                              |
+| push:slim  | push `:<version>-slim`                                                                             |
+| push:full  | push `:<version>` and `:<version>-full`                                                            |
+| publish    | build and push versioned `slim` and `full` tags                                                    |
 
 ## CI/CD
 

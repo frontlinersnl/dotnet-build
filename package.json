@@ -4,12 +4,12 @@
   "description": "[![logo](./logo.jpg)](https://frontliners.nl)",
   "main": "index.js",
   "scripts": {
-    "build:slim": "node -e \"const v=process.env.npm_package_version;require('child_process').execFileSync('docker',['build','-f','Dockerfile.slim','-t','frontliners/dotnet-build:slim','-t','frontliners/dotnet-build:'+v+'-slim','.'],{stdio:'inherit'})\"",
-    "build:full": "node -e \"const v=process.env.npm_package_version;require('child_process').execFileSync('docker',['build','--build-arg','BASE_IMAGE=frontliners/dotnet-build:'+v+'-slim','-t','frontliners/dotnet-build:latest','-t','frontliners/dotnet-build:'+v,'-t','frontliners/dotnet-build:full','-t','frontliners/dotnet-build:'+v+'-full','.'],{stdio:'inherit'})\"",
+    "build:slim": "DOCKER_VERSION_TAG=$(cat package.json | grep version | head -1 | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && docker buildx build --file Dockerfile.slim --tag frontliners/dotnet-build:slim --tag frontliners/dotnet-build:$DOCKER_VERSION_TAG-slim --sbom=true .",
+    "build:full": "DOCKER_VERSION_TAG=$(cat package.json | grep version | head -1 | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && docker buildx build --file Dockerfile --build-arg BASE_IMAGE=frontliners/dotnet-build:$DOCKER_VERSION_TAG-slim --tag frontliners/dotnet-build:latest --tag frontliners/dotnet-build:$DOCKER_VERSION_TAG --tag frontliners/dotnet-build:full --tag frontliners/dotnet-build:$DOCKER_VERSION_TAG-full --sbom=true .",
     "build": "npm run build:slim && npm run build:full",
     "tag": "docker tag frontliners/dotnet-build",
-    "push:slim": "node -e \"const v=process.env.npm_package_version,{execFileSync:r}=require('child_process');['slim',v+'-slim'].forEach(t=>r('docker',['push','frontliners/dotnet-build:'+t],{stdio:'inherit'}))\"",
-    "push:full": "node -e \"const v=process.env.npm_package_version,{execFileSync:r}=require('child_process');['latest',v,'full',v+'-full'].forEach(t=>r('docker',['push','frontliners/dotnet-build:'+t],{stdio:'inherit'}))\"",
+    "push:slim": "DOCKER_VERSION_TAG=$(cat package.json | grep version | head -1 | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && docker push frontliners/dotnet-build:$DOCKER_VERSION_TAG-slim",
+    "push:full": "DOCKER_VERSION_TAG=$(cat package.json | grep version | head -1 | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && docker push frontliners/dotnet-build:$DOCKER_VERSION_TAG && docker push frontliners/dotnet-build:$DOCKER_VERSION_TAG-full",
     "push": "npm run push:slim && npm run push:full",
     "publish": "npm run build && npm run push"
   },
