@@ -4,14 +4,14 @@
   "description": "[![logo](./logo.jpg)](https://frontliners.nl)",
   "main": "index.js",
   "scripts": {
-    "build:slim": "docker build -f Dockerfile.slim -t frontliners/dotnet-build:slim .",
-    "build:full": "docker build --build-arg BASE_IMAGE=frontliners/dotnet-build:slim -t frontliners/dotnet-build:latest -t frontliners/dotnet-build:full .",
+    "build:slim": "node -e \"const v=process.env.npm_package_version;require('child_process').execFileSync('docker',['build','-f','Dockerfile.slim','-t','frontliners/dotnet-build:slim','-t','frontliners/dotnet-build:'+v+'-slim','.'],{stdio:'inherit'})\"",
+    "build:full": "node -e \"const v=process.env.npm_package_version;require('child_process').execFileSync('docker',['build','--build-arg','BASE_IMAGE=frontliners/dotnet-build:'+v+'-slim','-t','frontliners/dotnet-build:latest','-t','frontliners/dotnet-build:'+v,'-t','frontliners/dotnet-build:full','-t','frontliners/dotnet-build:'+v+'-full','.'],{stdio:'inherit'})\"",
     "build": "npm run build:slim && npm run build:full",
     "tag": "docker tag frontliners/dotnet-build",
-    "push:slim": "docker push frontliners/dotnet-build:slim",
-    "push:full": "docker push frontliners/dotnet-build:latest && docker push frontliners/dotnet-build:full",
+    "push:slim": "node -e \"const v=process.env.npm_package_version,{execFileSync:r}=require('child_process');['slim',v+'-slim'].forEach(t=>r('docker',['push','frontliners/dotnet-build:'+t],{stdio:'inherit'}))\"",
+    "push:full": "node -e \"const v=process.env.npm_package_version,{execFileSync:r}=require('child_process');['latest',v,'full',v+'-full'].forEach(t=>r('docker',['push','frontliners/dotnet-build:'+t],{stdio:'inherit'}))\"",
     "push": "npm run push:slim && npm run push:full",
-    "publish": "DOCKER_PROD_TAG=$(cat package.json | grep version | head -1 | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && docker build -f Dockerfile.slim -t frontliners/dotnet-build:slim -t frontliners/dotnet-build:$DOCKER_PROD_TAG-slim . && docker build --build-arg BASE_IMAGE=frontliners/dotnet-build:$DOCKER_PROD_TAG-slim -t frontliners/dotnet-build:latest -t frontliners/dotnet-build:$DOCKER_PROD_TAG -t frontliners/dotnet-build:full -t frontliners/dotnet-build:$DOCKER_PROD_TAG-full . && docker push frontliners/dotnet-build:slim && docker push frontliners/dotnet-build:$DOCKER_PROD_TAG-slim && docker push frontliners/dotnet-build:latest && docker push frontliners/dotnet-build:$DOCKER_PROD_TAG && docker push frontliners/dotnet-build:full && docker push frontliners/dotnet-build:$DOCKER_PROD_TAG-full"
+    "publish": "npm run build && npm run push"
   },
   "repository": {
     "type": "git",

@@ -2,13 +2,13 @@ ARG BASE_IMAGE=frontliners/dotnet-build:slim
 FROM ${BASE_IMAGE}
 
 # "install" the dotnet 10 runtime so we can also run the NET 10 tests
-COPY --from=mcr.microsoft.com/dotnet/sdk:10.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
+COPY --from=mcr.microsoft.com/dotnet/aspnet:10.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
 
-# install base software
-RUN mkdir -p /usr/share/man/man1 \
-  && mkdir -p /usr/share/man/man7 \
+# Create man dirs needed by OpenJDK packages on slim base images
+RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7 \
   && apt-get update \
   && apt-get install --no-install-recommends -y \
+  # Used to download the NodeSource setup script and docker-compose binary
   curl \
   apt-transport-https \
   gnupg \
@@ -16,30 +16,29 @@ RUN mkdir -p /usr/share/man/man1 \
   dpkg \
   make \
   ca-certificates \
-  && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
-  && apt-get install --no-install-recommends -y nodejs \
-  && apt-get clean && rm -rf /var/lib/apt/lists/*
+  && curl -fsSL https://deb.nodesource.com/setup_26.x | bash - \
+  && apt-get install --no-install-recommends -y \
+  # Node.js and npm
+  nodejs \
+  # Java runtime (JRE) for Java-based CI tools such as dotnet-sonarscanner
+  openjdk-25-jre-headless \
+  #### Start install for Cypress (headless browser testing GUI libs) ####
+  libgtk-3-0t64 \
+  libgbm-dev \
+  libnotify-dev \
+  libnss3 \
+  libxss1 \
+  libasound2t64 \
+  libxtst6 \
+  xauth \
+  xvfb \
+  #### End install for Cypress (headless browser testing GUI libs) ####
+  #### Start install for headless browser E2E/unit testing ####
+  chromium \
+  firefox \
+  #### End install for headless browser E2E/unit testing ####
+  && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# install modern version of java
-RUN apt-get update \
-  && apt-get install --no-install-recommends -y openjdk-25-jdk openjdk-25-jre \
-  && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# install docker-compose
-RUN curl -L "https://github.com/docker/compose/releases/download/v2.40.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
+# install docker-compose (for E2E testing in Bitbucket Pipelines)
+RUN curl -fsSL "https://github.com/docker/compose/releases/download/v5.8.0/docker-compose-$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m)" -o /usr/local/bin/docker-compose \
   && chmod +x /usr/local/bin/docker-compose
-
-# install GUI libs for headless browser testing (Cypress)
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends libgtk-3-0t64 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb \
-  && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# install Chromium for (unit)-testing during build-phase
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends chromium \
-  && rm -rf /var/lib/apt/lists/*
-
-# install Firefox for (unit)-testing during build-phase
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends firefox \
-  && rm -rf /var/lib/apt/lists/*
